@@ -10,6 +10,4 @@ RUN pip install --no-cache-dir --upgrade poetry && \
 
 COPY . /app/
 
-EXPOSE 80
-
-CMD ["python", "src/main.py"]
+CMD ["uvicorn", "src.main:app", "--port", "80", "--host", "0.0.0.0"]

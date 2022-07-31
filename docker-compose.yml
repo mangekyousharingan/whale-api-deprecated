@@ -1,0 +1,5 @@
+services:
+  whale-api:
+    build: .
+    ports:
+      - "80:80"
