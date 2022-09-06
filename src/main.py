@@ -1,8 +1,4 @@
-from fastapi import FastAPI
+from src.app import WhaleAPI
 
-app = FastAPI()
-
-
-@app.get("/")
-async def health():
-    return {"healthy": True}
+whale_api = WhaleAPI()
+whale_api.set_up_and_start_service()
