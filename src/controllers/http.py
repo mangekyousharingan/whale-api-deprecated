@@ -3,10 +3,11 @@ import dataclasses
 from fastapi import FastAPI, Response
 from starlette.responses import JSONResponse
 
-from src.adapters.mempool import get_address_utxo
+from src.core.models.requests import AddressWealthRequest
+from src.core.usecases.address_wealth import AddressWealth
 
 
-def make_http_controller() -> FastAPI:
+def make_http_controller(address_wealth_usecase: AddressWealth) -> FastAPI:
 
     controller = FastAPI()
 
@@ -14,9 +15,10 @@ def make_http_controller() -> FastAPI:
     async def heartbeat() -> Response:
         return Response("OK")
 
-    @controller.get("/api/v1/address/{address}/utxo")
-    async def address_utxo(address: str) -> JSONResponse:
-        response = await get_address_utxo(address)
+    @controller.get("/api/v1/{coin}/address/{address}")
+    async def address_wealth(address: str, coin: str) -> JSONResponse:
+        usecase_request = AddressWealthRequest(coin.lower(), address)
+        response = await address_wealth_usecase(usecase_request)
         return JSONResponse(content=dataclasses.asdict(response))
 
     return controller
