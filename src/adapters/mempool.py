@@ -2,25 +2,27 @@ from dataclasses import dataclass
 
 import requests
 
+from src.core.models.responses import AddressWealthResponse
+from src.core.ports.DataPort import DataPort
+
 
 @dataclass
-class AddressUtxoResponse:
-    address: str
-    utxo: float
+class MempoolSpaceAdapter(DataPort):
+    url: str = "https://mempool.space"
 
+    async def get_address_wealth(self, address: str) -> AddressWealthResponse:
+        response = requests.get(f"{self.url}/api/address/{address}/utxo")
+        if not response.ok:
+            raise Exception("Failed when getting address utxo from Mempool API")
+        response_json = response.json()
+        address_utxo = await self._sum_utxo(response_json)
+        return AddressWealthResponse(address, address_utxo)
 
-async def get_address_utxo(address: str) -> AddressUtxoResponse:
-    url = f"https://mempool.space/api/address/{address}/utxo"
-    response = requests.get(url)
-    response_json = response.json()
-    address_utxo = sum_utxo(response_json)
-    return AddressUtxoResponse(address, address_utxo)
+    async def _sum_utxo(self, address_data: list[dict], satoshi: bool = False) -> float:
+        total = 0
+        for utxo in address_data:
+            total += utxo["value"]
 
-
-def sum_utxo(address_data: list[dict]) -> float:
-    total = 0
-    for utxo in address_data:
-        total += utxo["value"]
-
-    total /= 10 ** 8
-    return total
+        if not satoshi:
+            total /= 10**8
+        return total
