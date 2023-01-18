@@ -2,7 +2,8 @@ from dataclasses import dataclass
 
 import requests
 
-from src.core.models.responses import AddressWealthResponse
+from src.core.models.responses import (AddressTxsBalanceResponse,
+                                       AddressWealthResponse)
 from src.core.ports.DataPort import DataPort
 
 
@@ -29,10 +30,19 @@ class MempoolSpaceAdapter(DataPort):
             total /= 10**8
         return total
 
-    async def get_address_transactions(self, address: str) -> list[dict]:
-        response = requests.get(f"{self.url}/api/address/{address}/txs/chain")
+    async def get_address_transactions(self, address: str) -> AddressTxsBalanceResponse:
+        response = requests.get(f"{self.url}/api/address/{address}")
         if not response.ok:
             raise Exception("Failed when getting address txs from Mempool API")
 
         response_json = response.json()
-        return response_json
+        chain_stats = response_json["chain_stats"]
+
+        address_balance_response = AddressTxsBalanceResponse(
+            value_in=chain_stats["funded_txo_sum"],
+            value_out=chain_stats["spent_txo_sum"],
+            txs=chain_stats["tx_count"],
+            difference=chain_stats["funded_txo_sum"] - chain_stats["spent_txo_sum"],
+        )
+
+        return address_balance_response
