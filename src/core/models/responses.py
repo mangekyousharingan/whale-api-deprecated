@@ -10,6 +10,9 @@ class AddressWealthResponse:
 
 @dataclass
 class AddressTxsBalanceResponse:
+    coin: str = field(init=False)
+    address: str = field(init=False)
+    txs: int
     value_in: float
     value_out: float
     difference: float
