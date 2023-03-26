@@ -4,11 +4,11 @@ from typing import Optional
 import uvicorn
 from fastapi import FastAPI
 
-from src.adapters.mempool import MempoolSpaceAdapter
-from src.controllers.http import make_http_controller
-from src.core.ports.DataPort import DataPort
-from src.core.usecases.address_txs_balance_sheet import AddressTxBalance
-from src.core.usecases.address_wealth import AddressWealth
+from adapters.mempool import MempoolSpaceAdapter
+from controllers.http import make_http_controller
+from ports.DataPort import DataPort
+from core.usecases.address_txs_balance_sheet import AddressTxBalance
+from core.usecases.address_wealth import AddressWealth
 
 
 @dataclass
@@ -40,6 +40,7 @@ class WhaleAPI:
         )
 
     def start_service(self) -> None:
+        print("Starting service...")
         uvicorn.run(self.http_controller, port=8080, host="0.0.0.0")
 
     def set_up_and_start_service(self) -> None:

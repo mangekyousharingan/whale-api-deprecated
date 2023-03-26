@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 
-from src.core.models.responses import AddressWealthResponse
+from core.models.responses import AddressWealthResponse
 
 
 class DataPort(ABC):
