@@ -3,10 +3,10 @@ import dataclasses
 from fastapi import FastAPI, Response
 from starlette.responses import JSONResponse
 
-from src.core.models.requests import (AddressTxsBalanceRequest,
+from core.models.requests import (AddressTxsBalanceRequest,
                                       AddressWealthRequest)
-from src.core.usecases.address_txs_balance_sheet import AddressTxBalance
-from src.core.usecases.address_wealth import AddressWealth
+from core.usecases.address_txs_balance_sheet import AddressTxBalance
+from core.usecases.address_wealth import AddressWealth
 
 
 def make_http_controller(

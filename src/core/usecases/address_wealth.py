@@ -1,9 +1,9 @@
 from dataclasses import dataclass
 from typing import Callable
 
-from src.core.models.requests import AddressWealthRequest
-from src.core.models.responses import AddressWealthResponse
-from src.core.ports.DataPort import DataPort
+from core.models.requests import AddressWealthRequest
+from core.models.responses import AddressWealthResponse
+from ports.DataPort import DataPort
 
 
 @dataclass

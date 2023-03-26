@@ -2,9 +2,8 @@ from dataclasses import dataclass
 
 import requests
 
-from src.core.models.responses import (AddressTxsBalanceResponse,
-                                       AddressWealthResponse)
-from src.core.ports.DataPort import DataPort
+from core.models.responses import AddressTxsBalanceResponse, AddressWealthResponse
+from ports.DataPort import DataPort
 
 
 @dataclass

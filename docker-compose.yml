@@ -1,5 +1,7 @@
 services:
   whale-api:
+    image: whale-api-img
+    container_name: whale-api
     build: .
     ports:
-      - "80:80"
+      - "8080:8080"
