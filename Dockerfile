@@ -10,4 +10,8 @@ RUN pip install --no-cache-dir --upgrade poetry && \
 
 COPY /src /app/src/
 
-CMD ["uvicorn", "src.main:app", "--port", "80", "--host", "0.0.0.0"]
+WORKDIR /app/src/
+
+CMD ["python", "main.py"]
+
+# TODO: add entrypoint
